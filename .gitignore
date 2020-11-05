@@ -1,0 +1,5 @@
+*.stackdump
+*.pyc
+*.exe
+*.tds
+*.obj
