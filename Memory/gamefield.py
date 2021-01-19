@@ -93,7 +93,6 @@ class Gamefield(object):
 
 			# convert String(board[1]) to List => reset
 			detail_board = list(self.board[1])
-			# detail_board = [x for x in self.board[1]]
 			
 			# show the boardstate
 			for row in range(self.LENGTH):
@@ -121,8 +120,6 @@ class Gamefield(object):
 			
 			# convert List to String back
 			total_board = "".join(detail_board)
-			# for x in detail_board:
-				# total_board += x
 			
 			print(' {}{} {}'.format(' ' if (column+1) <= 9 else '', (column+1), total_board))
 			if column < self.HEIGHT-1:
@@ -176,30 +173,30 @@ class Gamefield(object):
 			
 			if not invalid:
 				# set user input as coordinates
-				pos_x[move] = int(inp[0])-1	
-				pos_y[move] = int(inp[1])-1	
+				pos_y[move] = int(inp[0])-1 
+				pos_x[move] = int(inp[1])-1 
 
 				# if field is empty: picture has already been found
-				if self.state[pos_x[move]][pos_y[move]] == -1:
+				if self.state[pos_y[move]][pos_x[move]] == -1:
 					print()
 					print('  INVALID MOVE!\n This picture has already been found!')
 					invalid = True
 				
 				# already selected field
-				elif self.state[pos_x[move]][pos_y[move]] == 1:
+				elif self.state[pos_y[move]][pos_x[move]] == 1:
 					print()
 					print('  INVALID MOVE!\n This field has already been selected!')
 					invalid = True
-				# No complications	
+				# No complications  
 				else:
-					self.state[pos_x[move]][pos_y[move]] = 1
+					self.state[pos_y[move]][pos_x[move]] = 1
 					self.print_board()
 					move += 1
 			
 		# choose fields are same
-		if self.picture.frontsite[pos_x[0]][pos_y[0]] == self.picture.frontsite[pos_x[1]][pos_y[1]]:
-			self.state[pos_x[0]][pos_y[0]] = self.state[pos_x[1]][pos_y[1]] = -1
+		if self.picture.frontsite[pos_y[0]][pos_x[0]] == self.picture.frontsite[pos_y[1]][pos_x[1]]:
+			self.state[pos_y[0]][pos_x[0]] = self.state[pos_y[1]][pos_x[1]] = -1
 			return 1
 		else:
-			self.state[pos_x[0]][pos_y[0]] = self.state[pos_x[1]][pos_y[1]] = 0
+			self.state[pos_y[0]][pos_x[0]] = self.state[pos_y[1]][pos_x[1]] = 0
 		return 0
