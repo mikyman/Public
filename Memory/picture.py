@@ -1,4 +1,4 @@
-import random
+from random import shuffle as r_shuffle
 
 class Picture(object):
 	def __init__(self, number_of_pairs, length_of_gamefield, extra_picture = False):
@@ -22,5 +22,5 @@ class Picture(object):
 		if extra_picture:
 			frontsite += ['Z', 'Z']
 			
-		random.shuffle(frontsite)
+		r_shuffle(frontsite)
 		return [frontsite[i:i+length_of_gamefield] for i in range(0, len(frontsite), length_of_gamefield)]
