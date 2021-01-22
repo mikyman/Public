@@ -136,7 +136,7 @@ def options_menu(option_list):
     clearscreen.clear()
     length, height = option_list
     while True:
-        memory.draw_banner('Options Menu')
+        draw_banner('Options Menu')
         print('\tGamefield Settings')
         print()
         print('\t(L)ength: {}'.format(length))
