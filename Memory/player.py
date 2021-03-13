@@ -45,15 +45,15 @@ class Player(object):
     print()
     print(' {}'.format('-'*40))     
   
-  @staticmethod
-  def print_statistics_body(player):
+
+  def print_statistics_body(self):
     # | Player 1   |     99     |      7     |
     # ----------------------------------------
     print(' |', end = '')
-    for value in [player.name, player.number_of_trials, player.number_of_pairs]:
+    for value in [self.name, self.number_of_trials, self.number_of_pairs]:
       left_site = right_side = 6
       for i in range(1, len(str(value)[:10])+1):
-        if i%2==1:
+        if i%2 == 1:
           left_site -= 1
         else:
           right_side -= 1
