@@ -125,9 +125,9 @@ def new_game(option_list):
 
     clearscreen.clear()
     player_list = sort_player_list(player_list) # sorted Player after numbers of pairs and Trials
-    Player.print_statistics_head()  # print the first player in table
+    Player.print_statistics_head()              # print the first player in table
     for player in player_list:
-      Player.print_statistics_body(player)      # print all other player
+      player.print_statistics_body()            # print all other player
       
     if not input('\n  Play again?(Y/N) ').lower().startswith('y'):
       clearscreen.clear()         
