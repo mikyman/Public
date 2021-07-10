@@ -5,7 +5,7 @@ from player import Player
 from random import shuffle
 
 # This is the classic game of Memory
-# Verson: 2.4.0
+# Verson: 2.5.0
 
 def draw_banner(message):
   print()

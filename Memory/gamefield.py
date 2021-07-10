@@ -134,9 +134,13 @@ class Gamefield(object):
     return 0
     
   def bord_is_empty(self):
-    for i in range(len(self.state)):
-      for j in range(len(self.state[i])):
-        if self.state[i][j] == 0:
+    '''
+      check of 0 in state per line
+      if the value 0 in state,
+      minimum 2 pics are on the bord.
+    '''
+    for row in self.state:
+        if 0 in row:
           return False
     return True
       
