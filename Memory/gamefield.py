@@ -161,10 +161,10 @@ class Gamefield(object):
       
       if not player_name.endswith('_com'):
         try:
-          print('\n   {}, please enter a number'.format(player_name))
-          print('   (e.g. {length}1 for the right-up-corner or'.format(length = self.LENGTH))
+          print('\n   {}, please choose your field'.format(player_name))
+          print('   (e.g. {length}1 for the top right corner or'.format(length = self.LENGTH))
           print('    0 for the Mainmenu)')
-          inp = input('   Choose your field: ')[:2]
+          inp = input('   >> ')[:2]
 
           #Mainmenu
           if int(inp) == 0:
@@ -209,10 +209,10 @@ class Gamefield(object):
             move += 1
       else:
         # print comuter's move
-        inp = computer.make_move(self.state)
-        move_com.append(str(int(inp[1]) + 1) + str(int(inp[0]) + 1))
-        pos_x[move] = int(inp[0])
-        pos_y[move] = int(inp[1])
+        inp = computer.make_move(self.state, self.picture.frontsite)
+        move_com.append(str(inp[1] + 1) + str(inp[0] + 1))  # for user output
+        pos_x[move] = inp[0]
+        pos_y[move] = inp[1]
         self.state[pos_x[move]][pos_y[move]] = 1
         move += 1
         if move == 2:
