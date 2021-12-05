@@ -2,10 +2,12 @@ import clearscreen
 import computer
 import gamefield
 from player import Player
+
 from random import shuffle
+from time import sleep
 
 # This is the classic game of Memory
-# Verson: 2.5.0
+# Verson: 2.6.0
 
 def draw_banner(message):
   print()
@@ -80,6 +82,15 @@ def init_game():
       if not is_name_in_list(name, list_of_players):
         list_of_players.append(Player(name))
         break
+  clearscreen.clear()
+  draw_banner('Game Menu')
+  
+  print()
+  print('  Following players are in game:\n')
+  for player in list_of_players:
+    print(f'  {player.name}')
+  print('\n  Good playing!')
+  input('\n  Press Enter to continue...')
   shuffle(list_of_players)
   return list_of_players
 
@@ -139,26 +150,29 @@ def options_menu(option_list):
   length, height = option_list
   while True:
     draw_banner('Options Menu')
-    print('\tGamefield Settings')
+    print('\t Gamefield Settings')
     print()
-    print('\t(L)ength: {}'.format(length))
-    print('\t(H)eight: {}'.format(height))
+    print('\t(L)ength of gamefield: {}'.format(length))
+    print('\t(H)eight of gamefield: {}'.format(height))
     print()
-    print('     (R)eturn    (S)ave settings')
+    print('\t (B)ack without saving')
+    print('\t (S)ave settings')
     print()
-    print('    Please choose the first letter')
-    user_input = input('     (L or H etc.): ')
+    print('\tChoose one letter in brackets')
+    user_input = input('\t>> ')
     
     clearscreen.clear()
     if not user_input:
       continue
-    if user_input[0].lower() in ['l', 'h', 'r', 's']:
+    if user_input[0].lower() in ['l', 'h', 'b', 's']:
       user_input = user_input[0].lower()
       while True:
         try:
           if user_input == 'l':
+              print('\n  Size of length: {}'.format(length))
               length = int(input('\n  Enter length (1-9): '))
           elif user_input == 'h':
+              print('\n  Size of height: {}'.format(height))
               height = int(input('\n  Enter height (1-9): '))
         except ValueError:
           print('Please enter only Integer!')
@@ -168,31 +182,84 @@ def options_menu(option_list):
           clearscreen.clear()
           break
 
-      # go back without saveing
-      if user_input == 'r':
+      # go back without saving
+      if user_input == 'b':
         return option_list
         
       elif user_input == 's':
         if 4 <= length*height <= 81 and 1 <= length <= 9 and 1 <= height <= 9:
           return [length, height]
         else:
+          draw_banner('ERROR!')
           print('\n The valid range of (LENGTH x HEIGHT) must be between 4 and 81!')
           print(' And the valid range of LENGTH and HEIGHT must be between 1 and 9!')
 
 
 def print_rules():
-  pass
+  draw_banner('Rules')
+  print(
+    '''
+      Intro
+      =====
+      This is the classic game Memory. For 1 until 4 players.
+      You can uncover two fields and remember the letters.
+      If you find two identical letters, they disappear 
+      and it is your turn again. 
+      Otherwise it is the next player's turn.
+      
+      How to play
+      ===========
+      This scenario assumes a 4x4 playing field.
+      You can see the following:
+            1   2   3   4
+          ╔═══╦═══╦═══╦═══╗
+          ║ ~ ║ ~ ║ ~ ║ ~ ║ 1
+          ╠═══╬═══╬═══╬═══╣
+          ║ ~ ║ ~ ║ ~ ║ ~ ║ 2
+          ╠═══╬═══╬═══╬═══╣
+          ║ ~ ║ ~ ║ ~ ║ ~ ║ 3
+          ╠═══╬═══╬═══╬═══╣
+          ║ ~ ║ ~ ║ ~ ║ ~ ║ 4
+          ╚═══╩═══╩═══╩═══╝
+
+         abc, choose your field
+         (e.g. 41 for the top right corner or
+          0 for the Mainmenu)
+         >> |
+      
+      That mean, "abc" is the playername.
+      The message in brakets means:
+      enter the number 4 and 1 for the 
+      top right corner and press than Enter.
+      E.g.
+         3   4
+       ╦═══╦═══╗
+       ║ ~ ║ x ║ 1
+       ╬═══╬═══╣
+       
+      The field with the cross in it is the choice.
+      Please note that every move consists of two digits.
+      First a digit from the top row, then a digit from
+      the right column. Finally, press the Enter key for
+      the next field. This is how the number 14 results
+      from the example.
+      This is repeated until all fields are empty or
+      the main menu has been selected. (By choosing
+      the digit zero)
+    ''')
+  input('\n  Press Enter to close...')
   
 
 def exit_game():
-  input('\n   -={ Thanks for Playing }=- ')
+  print('\n   -={ Thanks for Playing }=- ')
+  sleep(2)
   exit()
 
 
 COMMANDS = {
   '1': new_game,
   '2': options_menu,
-  # '3': print_rules,
+  '3': print_rules,
   '0': exit_game
   }
 
@@ -204,7 +271,7 @@ def main_menu():
     draw_banner('Memory')
     print('\t1) New Game')
     print('\t2) Options')
-    # print('\t3) Game Rules')
+    print('\t3) Game Rules')
     print('\t0) Exit Game')
     print()
     user_input = input("   Please choose a number: ")
