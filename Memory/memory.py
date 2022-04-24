@@ -2,7 +2,6 @@ import clearscreen
 import computer
 import gamefield
 from player import Player
-
 from random import shuffle
 from time import sleep
 
@@ -104,11 +103,13 @@ def new_game(option_list):
     game = gamefield.Gamefield(option_list[0], option_list[1])
     for player in player_list:
       player.reset_points()
+    computer.possible_moves = dict()
+    computer.pairs = list()
       
     # changed player until board is not empty
     i = 0
     length_of_playerlist = len(player_list)
-    while not game.bord_is_empty():
+    while game.board_not_empty():
 
       player_list[i].add_trials()
       game.print_board()
@@ -128,7 +129,7 @@ def new_game(option_list):
         player_list[i].add_pairs()
         print('  Right! Keep it up!')
         
-        if not game.bord_is_empty():
+        if game.board_not_empty():
           print()
           print('  {} It\'s your turn again'.format( player_list[i].get_name() ))
           
