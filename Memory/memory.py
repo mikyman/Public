@@ -7,6 +7,7 @@ from time import sleep
 
 # This is the classic game of Memory
 # Verson: 2.6.0
+# Py Version: 3.6
 
 def draw_banner(message):
   print()
@@ -20,16 +21,17 @@ def draw_banner(message):
 def sort_player_list(player_list):
   # sorted by highest pairs
   if len(player_list) > 1:
-    for i in range(len(player_list)):
-      for j in range(i + 1, len(player_list)):
+    len_list = len(player_list)
+    for i in range(len_list-1):
+      for j in range(i + 1, len_list):
         if player_list[j].get_pairs() > player_list[i].get_pairs():
           player_list[i], player_list[j] = player_list[j], player_list[i]
 
     # sorted by lowest attempts
-    for i in range(len(player_list)):
-      for j in range(i + 1, len(player_list)):
-        if (((player_list[j].get_pairs() == player_list[i].get_pairs()) and
-        (player_list[j].get_trials() < player_list[i].get_trials()))):
+    for i in range(len_list-1):
+      for j in range(i + 1, len_list):
+        if ((player_list[j].get_pairs() == player_list[i].get_pairs()) and
+        (player_list[j].get_trials() < player_list[i].get_trials())):
           player_list[i], player_list[j] = player_list[j], player_list[i]
   return player_list
 
@@ -42,6 +44,7 @@ def get_name_of_player(player_id, list_of_players):
       print('  (Enter 0 for a computer opponent)')
     user_name = input('\n  > ')[:10]
     if player_id > 1 and user_name == '0':
+      sleep(0.1)
       return computer.get_name(list_of_players)
     if (len(user_name) >= 3 and user_name.isalnum()):
       return user_name
