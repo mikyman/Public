@@ -6,8 +6,9 @@ from random import shuffle
 from time import sleep
 
 # This is the classic game of Memory
-# Verson: 2.6.0
+# Verson: 2.7.0
 # Py Version: 3.6
+
 
 def draw_banner(message):
   print()
@@ -31,7 +32,7 @@ def sort_player_list(player_list):
     for i in range(len_list-1):
       for j in range(i + 1, len_list):
         if ((player_list[j].get_pairs() == player_list[i].get_pairs()) and
-        (player_list[j].get_trials() < player_list[i].get_trials())):
+            (player_list[j].get_trials() < player_list[i].get_trials())):
           player_list[i], player_list[j] = player_list[j], player_list[i]
   return player_list
 
@@ -58,7 +59,7 @@ def is_name_in_list(name, list_of_players):
       print(' Sorry! your name is already taken!')
       return True
   return False
-  
+
 
 def get_number_of_players():
   while True:
@@ -67,7 +68,7 @@ def get_number_of_players():
     except ValueError:
       print(' Please enter ONLY numbers!')
       continue
-  
+
     if 0 < number_of_player <= 4:
       return number_of_player
     else:
@@ -80,13 +81,13 @@ def init_game():
     clearscreen.clear()
     draw_banner('Game Menu')
     while True:
-      name = get_name_of_player(i+1, list_of_players)
+      name = get_name_of_player(i + 1, list_of_players)
       if not is_name_in_list(name, list_of_players):
         list_of_players.append(Player(name))
         break
   clearscreen.clear()
   draw_banner('Game Menu')
-  
+
   print()
   print('  Following players are in game:\n')
   for player in list_of_players:
@@ -108,7 +109,7 @@ def new_game(option_list):
       player.reset_points()
     computer.possible_moves = dict()
     computer.pairs = list()
-      
+
     # changed player until board is not empty
     i = 0
     length_of_playerlist = len(player_list)
@@ -118,34 +119,35 @@ def new_game(option_list):
       game.print_board()
       choice_return = game.choose_field(player_list[i].name)
       print()
-      
+
       if choice_return == 2:      # Mainmenu
         clearscreen.clear()
         return
-        
+
       elif choice_return == 0:    # No error
         print(' hmm... maybe next time...')
         i = (i + 1) % length_of_playerlist
         print('\n  {}'.format(player_list[i].get_name()))
-        
+
       elif choice_return == 1:    # right try
         player_list[i].add_pairs()
         print('  Right! Keep it up!')
-        
+
         if game.board_not_empty():
           print()
-          print('  {} It\'s your turn again'.format( player_list[i].get_name() ))
-          
+          print('  {} It\'s your turn again'.format(player_list[i].get_name()))
+
       input(' Press Enter to continue...')
 
     clearscreen.clear()
-    player_list = sort_player_list(player_list) # sorted Player after numbers of pairs and Trials
+    # sorted Player after numbers of pairs and Trials
+    player_list = sort_player_list(player_list)
     Player.print_statistics_head()              # print the first player in table
     for player in player_list:
       player.print_statistics_body()            # print all other player
-      
+
     if not input('\n  Play again?(Y/N) ').lower().startswith('y'):
-      clearscreen.clear()         
+      clearscreen.clear()
       break
 
 
@@ -164,7 +166,7 @@ def options_menu(option_list):
     print()
     print('\tChoose one letter in brackets')
     user_input = input('\t>> ')
-    
+
     clearscreen.clear()
     if not user_input:
       continue
@@ -173,11 +175,11 @@ def options_menu(option_list):
       while True:
         try:
           if user_input == 'l':
-              print('\n  Size of length: {}'.format(length))
-              length = int(input('\n  Enter length (1-9): '))
+            print('\n  Size of length: {}'.format(length))
+            length = int(input('\n  Enter new length (1-9): '))
           elif user_input == 'h':
-              print('\n  Size of height: {}'.format(height))
-              height = int(input('\n  Enter height (1-9): '))
+            print('\n  Size of height: {}'.format(height))
+            height = int(input('\n  Enter new height (1-9): '))
         except ValueError:
           print('Please enter only Integer!')
         except Exception as e:
@@ -189,9 +191,12 @@ def options_menu(option_list):
       # go back without saving
       if user_input == 'b':
         return option_list
-        
+
       elif user_input == 's':
-        if 4 <= length*height <= 81 and 1 <= length <= 9 and 1 <= height <= 9:
+        if ((4 <= length*height <= 81) and
+            (1 <= length <= 9) and
+            (1 <= height <= 9)
+           ):
           return [length, height]
         else:
           draw_banner('ERROR!')
@@ -252,11 +257,11 @@ def print_rules():
       the digit zero)
     ''')
   input('\n  Press Enter to close...')
-  
+
 
 def exit_game():
   print('\n   -={ Thanks for Playing }=- ')
-  sleep(2)
+  sleep(1.2)
   exit()
 
 
@@ -265,11 +270,11 @@ COMMANDS = {
   '2': options_menu,
   '3': print_rules,
   '0': exit_game
-  }
+}
 
 
 def main_menu():
-  options = [4, 4]        #  Length, Height of Gamefield
+  options = [4, 4]  # Length, Height of Gamefield
   while True:
     clearscreen.clear()
     draw_banner('Memory')
@@ -288,11 +293,15 @@ def main_menu():
       user_input = user_input[0]
       print()
       if user_input == '1':
-        COMMANDS[user_input](options)               # function call with param
+        # function call with param
+        COMMANDS[user_input](options)
       elif user_input == '2':
-        options = COMMANDS[user_input](options)     # function call with param and return
+        # function call with param and return
+        options = COMMANDS[user_input](options)
       else:
-        COMMANDS[user_input]()                      # only a function call
+        # only a function call
+        COMMANDS[user_input]()
 
 
-main_menu()
+if __name__ == '__main__':
+  main_menu()
