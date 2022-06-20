@@ -23,6 +23,17 @@ class Player(object):
   def reset_points(self):
     self.number_of_trials = self.number_of_pairs = 0
 
+  def __make_center(value, max_width_column=12):
+    left_site = right_side = (max_width_column // 2)
+    max_width_value = (max_width_column - 2)
+    value = str(value)[:max_width_value]
+    for i in range(len(value)):
+      if i % 2:   # i is odd
+        right_side -= 1
+      else:
+        left_site -= 1
+    return f"{' ' * left_site}{value}{' ' * right_side}"
+
   @staticmethod
   def print_statistics_head():
     # length per field = 12 - 2 Spaces left and right
@@ -33,31 +44,18 @@ class Player(object):
     # ----------------------------------------
 
     print()
-    print(' {}'.format('-' * 40))
+    print(f" {'-' * 40}")
     print(' |', end='')
     for value in ['Name', 'Trials', 'Pairs']:
-      left_site = right_side = 6
-      for i in range(1, len(value) + 1):
-        if i % 2 == 1:
-          left_site -= 1
-        else:
-          right_side -= 1
-      print('{}{}{}|'.format(' ' * left_site, value, ' ' * right_side), end='')
+      print(Player.__make_center(value), end='|')
     print()
-    print(' {}'.format('-' * 40))
+    print(f" {'-' * 40}")
 
   def print_statistics_body(self):
     # | Player 1   |     99     |      7     |
     # ----------------------------------------
     print(' |', end='')
     for value in [self.name, self.number_of_trials, self.number_of_pairs]:
-      left_site = right_side = 6
-      for i in range(1, len(str(value)[:10]) + 1):
-        if i % 2 == 1:
-          left_site -= 1
-        else:
-          right_side -= 1
-      print('{}{}{}|'.format(' ' * left_site,
-            str(value)[:10], ' ' * right_side), end='')
+      print(Player.__make_center(value), end='|')
     print()
-    print(' {}'.format('-' * 40))
+    print(f" {'-' * 40}")
