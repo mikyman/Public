@@ -45,8 +45,7 @@ def get_name_of_player(player_id, list_of_players):
     if player_id > 1:
       print('  (Enter 0 for a computer opponent)')
     user_name = input('\n  > ')[:10]
-    # if player_id > 1 and user_name == '0':
-    if user_name == '0':
+    if player_id > 1 and user_name == '0':
       sleep(0.1)
       return Computer.get_name(list_of_players)
     if (len(user_name) >= 3 and user_name.isalnum()):
