@@ -6,7 +6,6 @@ from platform import system
   use clear()
 '''
 
-
 def clear():
   if system() == 'Windows':
     call(['cls'], shell=True)

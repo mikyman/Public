@@ -1,13 +1,14 @@
 import clearscreen
-import computer
-import gamefield
+from gamefield import Gamefield
+from computer import Computer
 from player import Player
+
 from random import shuffle
 from time import sleep
 
 # This is the classic game of Memory
-# Verson: 2.7.0
-# Py Version: 3.6
+# Verson: 2.8.0
+# Py Version: 3.8
 
 
 def draw_banner(message):
@@ -39,14 +40,15 @@ def sort_player_list(player_list):
 
 def get_name_of_player(player_id, list_of_players):
   while True:
-    print('  Player {}'.format(player_id))
+    print(f'  Player {player_id}')
     print('  What is your name? (max 10 character):')
     if player_id > 1:
       print('  (Enter 0 for a computer opponent)')
     user_name = input('\n  > ')[:10]
-    if player_id > 1 and user_name == '0':
+    # if player_id > 1 and user_name == '0':
+    if user_name == '0':
       sleep(0.1)
-      return computer.get_name(list_of_players)
+      return Computer.get_name(list_of_players)
     if (len(user_name) >= 3 and user_name.isalnum()):
       return user_name
     print(' You can use only letters and digits.\n (But min 3 of that.)\n Try it again')
@@ -104,11 +106,11 @@ def new_game(option_list):
   player_list = init_game()
   while True:
     clearscreen.clear()
-    game = gamefield.Gamefield(option_list[0], option_list[1])
+    game = Gamefield(option_list[0], option_list[1])
     for player in player_list:
       player.reset_points()
-    computer.possible_moves = dict()
-    computer.pairs = list()
+    Computer.possible_moves = dict()
+    Computer.pairs = list()
 
     # changed player until board is not empty
     i = 0
@@ -124,10 +126,10 @@ def new_game(option_list):
         clearscreen.clear()
         return
 
-      elif choice_return == 0:    # No error
+      elif choice_return == 0:    # Wrong Pair
         print(' hmm... maybe next time...')
         i = (i + 1) % length_of_playerlist
-        print('\n  {}'.format(player_list[i].get_name()))
+        print(f'\n  {player_list[i].get_name()}')
 
       elif choice_return == 1:    # right try
         player_list[i].add_pairs()
@@ -135,7 +137,7 @@ def new_game(option_list):
 
         if game.board_not_empty():
           print()
-          print('  {} It\'s your turn again'.format(player_list[i].get_name()))
+          print(f'  {player_list[i].get_name()} It\'s your turn again')
 
       input(' Press Enter to continue...')
 
@@ -158,8 +160,8 @@ def options_menu(option_list):
     draw_banner('Options Menu')
     print('\t Gamefield Settings')
     print()
-    print('\t(L)ength of gamefield: {}'.format(length))
-    print('\t(H)eight of gamefield: {}'.format(height))
+    print(f'\t(L)ength of gamefield: {length}')
+    print(f'\t(H)eight of gamefield: {height}')
     print()
     print('\t (B)ack without saving')
     print('\t (S)ave settings')
@@ -175,10 +177,10 @@ def options_menu(option_list):
       while True:
         try:
           if user_input == 'l':
-            print('\n  Size of length: {}'.format(length))
+            print(f'\n  Size of length: {length}'.format())
             length = int(input('\n  Enter new length (1-9): '))
           elif user_input == 'h':
-            print('\n  Size of height: {}'.format(height))
+            print(f'\n  Size of height: {height}')
             height = int(input('\n  Enter new height (1-9): '))
         except ValueError:
           print('Please enter only Integer!')

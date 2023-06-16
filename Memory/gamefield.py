@@ -1,6 +1,8 @@
 import picture
 import clearscreen
-import computer
+from computer import Computer
+from field_state import Field_State
+
 from platform import system
 # https://docs.python.org/3.7/library/stdtypes.html?highlight=list
 
@@ -106,19 +108,19 @@ class Gamefield(object):
       # for row in range(self.LENGTH):
       # show the backsite
       # | ~ | ~ | ~ |
-      if self.state[column] == 0:
+      if self.state[column] == Field_State.BACKSITE:
         if self.board[column] == self.picture.backsite:
           continue
         self.board[column] = self.picture.backsite
       # show an empty field
       # | ~ |   | ~ |
-      elif self.state[column] == -1:
+      elif self.state[column] == Field_State.EMPTY:
         if self.board[column] == ' ':
           continue
         self.board[column] = ' '
       # show the picture
       # | ~ | M | ~ |
-      elif self.state[column] == 1:
+      elif self.state[column] == Field_State.FRONTSITE:
         if self.board[column] == self.picture.frontsite[column // self.LENGTH][column % self.LENGTH]:
           continue
         self.board[column] = self.picture.frontsite[column // self.LENGTH][column % self.LENGTH]
@@ -139,15 +141,15 @@ class Gamefield(object):
     print()
     print(end='   ')
     for i in range(self.LENGTH):
-      print('   {}'.format(i + 1), end='')
+      print(f'   {i + 1}', end='')
     print()
-    print('    {}'.format(self.construct[0]))
+    print(f'    {self.construct[0]}')
 
     for column in range(self.HEIGHT):
-      print('   {} {}'.format(game_board[column], (column + 1)))
+      print(f'   {game_board[column]} {column + 1}')
       if column < self.HEIGHT-1:
-        print('    {}'.format(self.construct[2]))
-    print('    {}'.format(self.construct[-1]))
+        print(f'    {self.construct[2]}')
+    print(f'    {self.construct[-1]}')
 
   def board_not_empty(self):
     '''
@@ -176,8 +178,8 @@ class Gamefield(object):
 
       if not player_name.endswith('_com'):
         try:
-          print('\n   {}, please choose your field'.format(player_name))
-          print('   (e.g. {length}1 for the top right corner or'.format(length=self.LENGTH))
+          print(f'\n   {player_name}, please choose your field')
+          print(f'   (e.g. {self.LENGTH}1 for the top right corner or')
           print('    0 for the Mainmenu)')
           inp = input('   >> ')[:2]
           inp_int = int(inp)
@@ -200,7 +202,7 @@ class Gamefield(object):
             print('  INVALID MOVE!')
             print(' Please enter the first number as Length')
             print(' und the second number as Height')
-            print(' e.g. {}1 for the right-up-corner'.format(self.LENGTH))
+            print(f' e.g. {self.LENGTH}1 for the right-up-corner')
             invalid = True
 
         except ValueError:
@@ -233,7 +235,7 @@ class Gamefield(object):
             move += 1
       else:
         # print comuter's move
-        inp = computer.make_move(
+        inp = Computer.make_move(
           self.state, self.picture.frontsite, self.LENGTH)
         # for better visual user output
         move_com.append(str(inp[0] + 1) + str(inp[1] + 1))
@@ -246,13 +248,13 @@ class Gamefield(object):
         if move == 2:
           self.print_board()
           print()
-          print('  {} choosed {} and {}'.format(player_name, move_com[0], move_com[1]))
+          print(f'  {player_name} choosed {move_com[0]} and {move_com[1]}')
 
     # choose fields are same
     if self.picture.frontsite[pos_y[0]][pos_x[0]] == self.picture.frontsite[pos_y[1]][pos_x[1]]:
-      self.state[index[0]] = self.state[index[1]] = -1
+      self.state[index[0]] = self.state[index[1]] = Field_State.EMPTY
       return 1
     # else next players round
     else:
-      self.state[index[0]] = self.state[index[1]] = 0
+      self.state[index[0]] = self.state[index[1]] = Field_State.BACKSITE
     return 0
